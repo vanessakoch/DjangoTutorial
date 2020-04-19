@@ -8,25 +8,68 @@
             </div>
         {% else %}
             {% if user.is_authenticated %}
-                <a class="btn btn-default right" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+                <a class="btn btn-primary right" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
             {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
-        <a class="btn btn-default right" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-        <a class="btn btn-default right" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="btn btn-primary right" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-primary right" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
+
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
+        
+        <div class="date">
+            <a href="{% url 'post_like' pk=post.pk %}">
+                {% if liked %}
+                    <span class="glyphicon glyphicon-thumbs-up liked"></span>
+                {% else %}
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                {% endif %}
+            </a> 
+
+            {{ post.likes_count }} &nbsp; | &nbsp;
+
+            <a href="{% url 'post_dislike' pk=post.pk %}">
+                {% if disliked %}
+                    <span class="glyphicon glyphicon-thumbs-down disliked"></span>
+                {% else %}
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                {% endif %}
+            </a> 
+
+            {{ post.dislikes_count }} &nbsp; | &nbsp;
+
+            {{ post.views }} views 
+
+            </br>
+            Índice de aprovação: 
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                aria-valuenow="{{ percent_likes|floatformat:1 }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ percent_likes|floatformat:0 }}%">
+                {{ percent_likes|floatformat:1 }}%
+                </div>
+            </div> 
+            
+            Índice de reprovação: 
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
+                aria-valuenow="{{ percent_dislikes|floatformat:1 }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ percent_dislikes|floatformat:0 }}%">
+                {{ percent_dislikes|floatformat:1 }}%
+                </div>
+            </div> 
+        </div>
     </div>
-    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+
+    <a class="btn btn-primary" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
     {% for comment in post.comments.all %}
     	{% if user.is_authenticated or comment.approved_comment %}
         <div class="comment">
             <div class="date">{{ comment.created_date }}
 
             {% if not comment.approved_comment %}
-            	<a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-                <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+            	<a class="btn btn-primary" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
             {% endif %}
             </div>
             <strong>{{ comment.author }}</strong>
@@ -34,7 +77,7 @@
         </div>
         {% endif %}
     {% empty %}
-        <p>No comments here yet :(</p>
+        <p></br>No comments here yet :(</p>
     {% endfor %}
 
 {% endblock %}
