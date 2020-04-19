@@ -14,7 +14,7 @@
 
 .progress {
     margin: 10px 0;
-    width: 50%;
+    width: 40%;
 }
 
 h1 a, h2 a {
@@ -79,9 +79,8 @@ h1, h2, h3, h4 {
 
 .container-error {
     width: 90vw;
-    height: 90vh;
-    display: flex;
-    flex-direction: row;
+    height: 70vh;
+    display: absolute;
     justify-content: center;
     align-items: center;
 }
@@ -91,7 +90,7 @@ h1, h2, h3, h4 {
 }
 
 img { 
-    width: 50%; 
+    width: 70%; 
 }
 
 input, textarea {
