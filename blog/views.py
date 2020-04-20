@@ -34,8 +34,8 @@ def post_detail(request, pk):
         if dislikes_count > 0:
             disliked = True
 
-    percent_likes = post.likes_count() * 100 / post.views
-    percent_dislikes = post.dislikes_count() * 100 / post.views
+    percent_likes = post.likes_count() / (post.likes_count() + post.dislikes_count()) * 100 
+    percent_dislikes = post.dislikes_count() / (post.likes_count() + post.dislikes_count()) * 100
 
     return render(
         request, 
